@@ -38,21 +38,21 @@ class Bot:
         self.search_phrase = 'papa wengz'
 
         self.comment_ids = set()
+        self.comment_authors = set()
 
     def run(self):
         try:
             for comment in self.subreddit.stream.comments(skip_existing=True):
-                if self.search_phrase in comment.body.lower() and comment.id not in self.comment_ids:
+                if self.search_phrase in comment.body.lower() and comment.id not in self.comment_ids and comment.author.name not in self.comment_authors:
                     logger.info('Found key phrase')
                     try:
                         self.comment_ids.add(comment.id)
-                        print(self.comment_ids)
+                        self.comment_authors.add(comment.author.name)
                         replyStr = '>' + random.choice(self.quotes)
                         replyStr += '\n___\n'
                         replyStr += '^(***There\'s only one Arsène Wenger*** ([/u/panarangcurry](https://www.reddit.com/u/panarangcurry), quote from [QuoteTab]({link}) archive)^)'.format(
                             link=QUOTES_BASE_URL_1)
                         comment.reply(replyStr)
-                        print('Replied')
                         logger.info('Replied')
                     except PrawcoreException:
                         logger.exception('Prawcore Exception')
