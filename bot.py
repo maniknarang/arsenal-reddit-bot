@@ -27,7 +27,8 @@ class Bot:
             raise SystemExit(e)
 
         self.reddit = praw.Reddit(client_id=os.environ.get('CLIENT_ID'),
-                                  client_secret=os.environ.get('CLIENT_SECRET'),
+                                  client_secret=os.environ.get(
+                                      'CLIENT_SECRET'),
                                   username=os.environ.get('REDDIT_USERNAME'),
                                   password=os.environ.get('REDDIT_PASSWORD'),
                                   user_agent='There\'s only one Arsène Wenger (by /u/panarangcurry)')
@@ -36,16 +37,21 @@ class Bot:
 
         self.search_phrase = 'papa wengz'
 
+        self.comment_ids = set()
+
     def run(self):
         for comment in self.subreddit.stream.comments(skip_existing=True):
-            if self.search_phrase in comment.body.lower():
+            if self.search_phrase in comment.body.lower() and comment.id not in self.comment_ids:
                 logger.info('Found key phrase')
                 try:
-                    reply = '>' + random.choice(self.quotes)
-                    reply += '\n___\n'
-                    reply += '^(***There\'s only one Arsène Wenger*** ([/u/panarangcurry](https://www.reddit.com/u/panarangcurry), quote from [QuoteTab]({link}) archive)^)'.format(
+                    self.comment_ids.add(comment.id)
+                    print(self.comment_ids)
+                    replyStr = '>' + random.choice(self.quotes)
+                    replyStr += '\n___\n'
+                    replyStr += '^(***There\'s only one Arsène Wenger*** ([/u/panarangcurry](https://www.reddit.com/u/panarangcurry), quote from [QuoteTab]({link}) archive)^)'.format(
                         link=QUOTES_BASE_URL_1)
-                    comment.reply(reply)
+                    comment.reply(replyStr)
+                    print('Replied')
                     logger.info('Replied')
                 except PrawcoreException:
                     logger.exception('Prawcore Exception')
