@@ -64,7 +64,8 @@ class Bot:
 
 def main():
     bot = Bot()
-    bot.run()
+    while True:
+        bot.run()
 
 
 if __name__ == '__main__':
