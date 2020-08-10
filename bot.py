@@ -40,23 +40,26 @@ class Bot:
         self.comment_ids = set()
 
     def run(self):
-        for comment in self.subreddit.stream.comments(skip_existing=True):
-            if self.search_phrase in comment.body.lower() and comment.id not in self.comment_ids:
-                logger.info('Found key phrase')
-                try:
-                    self.comment_ids.add(comment.id)
-                    print(self.comment_ids)
-                    replyStr = '>' + random.choice(self.quotes)
-                    replyStr += '\n___\n'
-                    replyStr += '^(***There\'s only one Arsène Wenger*** ([/u/panarangcurry](https://www.reddit.com/u/panarangcurry), quote from [QuoteTab]({link}) archive)^)'.format(
-                        link=QUOTES_BASE_URL_1)
-                    comment.reply(replyStr)
-                    print('Replied')
-                    logger.info('Replied')
-                except PrawcoreException:
-                    logger.exception('Prawcore Exception')
-                except KeyboardInterrupt:
-                    logger.exception('Keyboard Interrupt')
+        try:
+            for comment in self.subreddit.stream.comments(skip_existing=True):
+                if self.search_phrase in comment.body.lower() and comment.id not in self.comment_ids:
+                    logger.info('Found key phrase')
+                    try:
+                        self.comment_ids.add(comment.id)
+                        print(self.comment_ids)
+                        replyStr = '>' + random.choice(self.quotes)
+                        replyStr += '\n___\n'
+                        replyStr += '^(***There\'s only one Arsène Wenger*** ([/u/panarangcurry](https://www.reddit.com/u/panarangcurry), quote from [QuoteTab]({link}) archive)^)'.format(
+                            link=QUOTES_BASE_URL_1)
+                        comment.reply(replyStr)
+                        print('Replied')
+                        logger.info('Replied')
+                    except PrawcoreException:
+                        logger.exception('Prawcore Exception')
+                    except KeyboardInterrupt:
+                        logger.exception('Keyboard Interrupt')
+        except PrawcoreException:
+            logger.exception('Prawcore Exception')
 
 
 def main():
