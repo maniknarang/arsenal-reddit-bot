@@ -50,7 +50,7 @@ class Bot:
                         self.comment_authors.add(comment.author.name)
                         replyStr = '>' + random.choice(self.quotes)
                         replyStr += '\n___\n'
-                        replyStr += '^(***There\'s only one Arsène Wenger*** ([/u/panarangcurry](https://www.reddit.com/u/panarangcurry), quote from [QuoteTab]({link}) archive)^)'.format(
+                        replyStr += '^(***There\'s only one Arsène Wenger*** (quote from [QuoteTab]({link}) archive)^)'.format(
                             link=QUOTES_BASE_URL_1)
                         comment.reply(replyStr)
                         logger.info('Replied')
