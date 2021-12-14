@@ -31,7 +31,7 @@ class Bot:
                                       'CLIENT_SECRET'),
                                   username=os.environ.get('REDDIT_USERNAME'),
                                   password=os.environ.get('REDDIT_PASSWORD'),
-                                  user_agent='There\'s only one Arsène Wenger (by /u/panarangcurry)')
+                                  user_agent='There\'s only one Arsène Wenger')
 
         self.subreddit = self.reddit.subreddit('Gunners')
 
